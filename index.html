@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Rifa Manuel</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 500px; text-align: left; }
+    td {
+      border: 1px solid #000;
+      width: 50px;
+      height: 50px;
+      padding: 2px;
+      position: relative;
+      vertical-align: top;
+    }
+    .numero {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .editable {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      right: 2px;
+      font-size: 12px;
+      outline: none;
+      min-height: 14px;
+    }
+    .ocupado {
+      background-color: #d3ffd3;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Rifa Cesta Navidad</h2>
+<ol>
+  <li>Jamón</li>
+  <li>Paleta</li>
+  <li>Décimo Lotería Nacional</li>
+</ol>
+<img src="imagenes/renderedimage.jpeg" style="width: 13%; height:auto;" alt="Mi imagen">
+
+<table id="tablaRifa"></table>
+
+<script>
+const tabla = document.getElementById("tablaRifa");
+let numero = 1;
+
+// Cargar datos guardados en localStorage
+let nombresGuardados = JSON.parse(localStorage.getItem("rifa")) || {};
+
+// Generar tabla 10x10
+for (let fila = 0; fila < 10; fila++) {
+  const tr = document.createElement("tr");
+
+  for (let col = 0; col < 10; col++) {
+    const td = document.createElement("td");
+    const thisNumero = numero; // <-- Guardar el número actual para este td
+
+    const numeroSpan = document.createElement("span");
+    numeroSpan.className = "numero";
+    numeroSpan.innerText = thisNumero === 100 ? "00" : thisNumero;
+
+    const editableSpan = document.createElement("div");
+    editableSpan.className = "editable";
+    editableSpan.contentEditable = true;
+    editableSpan.id = "n" + thisNumero;
+    editableSpan.innerText = nombresGuardados[thisNumero] || "";
+
+    // Guardar al perder foco
+    editableSpan.addEventListener("blur", () => {
+      const texto = editableSpan.innerText.trim();
+      if(texto !== "") {
+        nombresGuardados[thisNumero] = texto;
+        localStorage.setItem("rifa", JSON.stringify(nombresGuardados));
+        editableSpan.classList.add("ocupado"); // opcional: resalta la celda
+        editableSpan.contentEditable = false; // opcional: bloquea la celda después de escribir
+      }
+    });
+
+    td.appendChild(numeroSpan);
+    td.appendChild(editableSpan);
+    tr.appendChild(td);
+    numero++;
+  }
+
+  tabla.appendChild(tr);
+}
+</script>
+
+</body>
+</html>
