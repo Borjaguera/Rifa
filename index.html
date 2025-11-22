@@ -4,25 +4,16 @@
   <meta charset="UTF-8" />
   <title>Rifa Manuel</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #faf8f5; color: #222; }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #faf8f5; color: #222; text-align: center; }
+
     h2 {
       font-family: 'Arial Black', Gadget, sans-serif;
       font-size: 34px;
       color: #b30000;
-      text-align: center;
       text-shadow: 2px 2px 6px #ccc;
       margin-bottom: 6px;
     }
 
-    /* SORTEO INFO */
-    .sorteo-info {
-      text-align:center; 
-      font-weight:bold; 
-      color:#b30000; 
-      margin-bottom:15px;
-    }
-
-    /* Premios */
     ol {
       background: #fff0e6;
       padding: 12px 20px;
@@ -35,7 +26,6 @@
     }
     ol li { margin-bottom: 6px; }
 
-    /* Imagen */
     .hero-img {
       display: block;
       margin: 10px auto 18px auto;
@@ -47,29 +37,38 @@
     }
     .hero-img:hover { transform: scale(1.05); box-shadow: 6px 6px 30px rgba(0,0,0,0.28); }
 
-    /* Contraseña */
+    /* CONTRASEÑA ESTILIZADA */
     .pw-box {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
+      background: #fff0e6;
+      padding: 15px 25px;
+      border-radius: 12px;
+      border: 2px solid #ffcc80;
+      display: inline-block;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
     .pw-box input[type="password"] {
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 160px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #b30000;
+      width: 180px;
+      font-size: 16px;
+      text-align: center;
     }
     .pw-box button {
-      padding: 6px 10px;
+      padding: 8px 14px;
       margin-left: 8px;
       background: #b30000;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
     }
-    .pw-box button:hover { opacity: 0.9; }
+    .pw-box button:hover { opacity: 0.9; transform: scale(1.05); }
 
-    /* Tabla container */
     .tabla-wrap {
       width: fit-content;
       margin: 18px auto;
@@ -80,7 +79,7 @@
       box-shadow: 3px 3px 18px rgba(0,0,0,0.12);
     }
 
-    table { border-collapse: collapse; }
+    table { border-collapse: collapse; position: relative; }
     td {
       border: 1px solid #bfbfbf;
       width: 60px;
@@ -96,18 +95,20 @@
 
     .numero {
       position: absolute;
-      top: 6px;
-      left: 6px;
+      top: 4px;
+      left: 4px;
       font-weight: 700;
       font-size: 13px;
       color: #b30000;
       text-shadow: 1px 1px 0 #fff;
+      z-index: 3;
     }
 
-    /* NOMBRES (no tapan números) */
     .editable {
-      position: relative;
-      margin-top: 18px;  /* deja espacio para el número */
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      right: 4px;
       font-size: 13px;
       padding: 2px 4px;
       min-height: 18px;
@@ -116,16 +117,33 @@
       cursor: text;
       color: #222;
       word-wrap: break-word;
+      z-index: 1;
     }
-
     .editable[contenteditable="false"] { cursor: default; }
     .editable:hover { background: #f6f6f6; }
+
+    input[type="checkbox"] {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      z-index: 2;
+      cursor: pointer;
+    }
 
     .ocupado {
       background-color: #d4f8d4 !important;
       border: 1px solid #5cb85c !important;
       box-shadow: inset 0 0 6px rgba(0,100,0,0.12);
       font-weight: 700;
+    }
+
+    .premiado {
+      background-color: gold !important;
+      border: 2px solid #b30000 !important;
+      box-shadow: 0 0 6px rgba(0,0,0,0.5);
     }
 
     @media (max-width: 720px) {
@@ -139,25 +157,23 @@
 
 <h2>Rifa Cesta Navidad</h2>
 
-<p class="sorteo-info">
-  📅 Sorteo el día <strong>21 de diciembre</strong><br>
-  🍀 Con la <strong>terminación del número premiado de la ONCE</strong>
-</p>
-
 <ol>
   <li>Jamón</li>
   <li>Paleta</li>
   <li>Décimo Lotería Nacional</li>
 </ol>
 
-<img class="hero-img" src="imagenes/renderedimage.jpeg" alt="Mi imagen">
+<p style="font-weight:bold; color:#b30000;">
+📅 Sorteo el día <strong>21 de diciembre</strong> con la terminación del número premiado de la ONCE
+</p>
 
-<!-- Pedir contraseña -->
+<img class="hero-img" src="imagenes/renderedimage.jpeg" alt="Premio">
+
 <div class="pw-box">
-  <label for="pwd">Contraseña para modificar nombres:</label>
+  <label for="pwd">Contraseña para modificar nombres/pagado:</label>
   <input type="password" id="pwd" placeholder="Introduce la contraseña">
   <button id="btnPwd">Aceptar</button>
-  <button id="btnLogout" title="Cerrar sesión de edición" style="display:none; margin-left:8px;">Cerrar</button>
+  <button id="btnLogout" style="display:none; margin-left:8px;">Cerrar</button>
 </div>
 
 <div class="tabla-wrap">
@@ -166,146 +182,152 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCNg_YSCyPJd0MJUTHYTTeQCHRckkCWVrU",
-    authDomain: "rifa-manuel.firebaseapp.com",
-    databaseURL: "https://rifa-manuel-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "rifa-manuel",
-    storageBucket: "rifa-manuel.firebasestorage.app",
-    messagingSenderId: "431157221434",
-    appId: "1:431157221434:web:235a69a675bdaf220ebd03"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCNg_YSCyPJd0MJUTHYTTeQCHRckkCWVrU",
+  authDomain: "rifa-manuel.firebaseapp.com",
+  databaseURL: "https://rifa-manuel-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "rifa-manuel",
+  storageBucket: "rifa-manuel.firebasestorage.app",
+  messagingSenderId: "431157221434",
+  appId: "1:431157221434:web:235a69a675bdaf220ebd03"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+const tabla = document.getElementById("tablaRifa");
+const btnPwd = document.getElementById("btnPwd");
+const inputPwd = document.getElementById("pwd");
+const btnLogout = document.getElementById("btnLogout");
+const CORRECT_PWD = "1919";
+let canEdit = sessionStorage.getItem('rifa_can_edit') === '1';
 
-  const tabla = document.getElementById("tablaRifa");
-  const btnPwd = document.getElementById("btnPwd");
-  const inputPwd = document.getElementById("pwd");
-  const btnLogout = document.getElementById("btnLogout");
-  const CORRECT_PWD = "1919";
+function setEditState(state) {
+  canEdit = !!state;
+  if (canEdit) { sessionStorage.setItem('rifa_can_edit', '1'); btnLogout.style.display = "inline-block"; }
+  else { sessionStorage.removeItem('rifa_can_edit'); btnLogout.style.display = "none"; }
+}
 
-  let canEdit = sessionStorage.getItem('rifa_can_edit') === '1';
+btnPwd.addEventListener("click", () => {
+  if(inputPwd.value === CORRECT_PWD) { setEditState(true); alert("Contraseña correcta."); }
+  else { alert("Contraseña incorrecta."); }
+  inputPwd.value = "";
+});
 
-  function setEditState(state) {
-    canEdit = !!state;
-    if (canEdit) {
-      sessionStorage.setItem('rifa_can_edit', '1');
-      btnLogout.style.display = "inline-block";
-    } else {
-      sessionStorage.removeItem('rifa_can_edit');
-      btnLogout.style.display = "none";
+btnLogout.addEventListener("click", () => { setEditState(false); alert("Modo edición cerrado."); });
+
+// Construcción de tabla
+let numero = 1;
+function construirTabla() {
+  tabla.innerHTML = "";
+  numero = 1;
+  for(let fila=0; fila<10; fila++) {
+    const tr = document.createElement("tr");
+    for(let col=0; col<10; col++) {
+      const td = document.createElement("td");
+      const thisNumero = numero;
+
+      const numeroSpan = document.createElement("span");
+      numeroSpan.className = "numero";
+      numeroSpan.innerText = thisNumero===100?"00":thisNumero;
+
+      const editableSpan = document.createElement("div");
+      editableSpan.className="editable";
+      editableSpan.id="n"+thisNumero;
+      editableSpan.contentEditable=false;
+
+      editableSpan.addEventListener("click", ()=>{
+        if(!canEdit){ alert("Introduce la contraseña para modificar nombres."); return; }
+        editableSpan.contentEditable=true; editableSpan.focus();
+      });
+
+      editableSpan.addEventListener("blur", ()=>{
+        if(!canEdit){ editableSpan.contentEditable=false; return; }
+        const texto = editableSpan.innerText.trim();
+        const key = "nombres/"+thisNumero;
+        if(texto!==""){ db.ref(key).set(texto); editableSpan.classList.add("ocupado"); editableSpan.contentEditable=false; }
+        else { db.ref(key).remove(); editableSpan.classList.remove("ocupado"); editableSpan.contentEditable=false; }
+      });
+
+      const checkbox = document.createElement("input");
+      checkbox.type="checkbox";
+      checkbox.disabled = !canEdit;
+      checkbox.addEventListener("change", ()=>{
+        if(!canEdit){ checkbox.checked = !checkbox.checked; return; }
+        db.ref("pagado/"+thisNumero).set(checkbox.checked ? true : null);
+      });
+
+      td.appendChild(numeroSpan);
+      td.appendChild(editableSpan);
+      td.appendChild(checkbox);
+      tr.appendChild(td);
+      numero++;
     }
+    tabla.appendChild(tr);
   }
+}
 
-  btnPwd.addEventListener("click", () => {
-    const val = inputPwd.value;
-    if (val === CORRECT_PWD) {
-      setEditState(true);
-      alert("Contraseña correcta. Ya puedes editar.");
-    } else {
-      alert("Contraseña incorrecta.");
-    }
-    inputPwd.value = "";
-  });
+construirTabla();
 
-  btnLogout.addEventListener("click", () => {
-    setEditState(false);
-    alert("Modo edición cerrado.");
-  });
+// Firebase listeners
+const nombresRef = db.ref("nombres");
+nombresRef.on("child_added", snap=>updateCell(parseInt(snap.key,10), snap.val()));
+nombresRef.on("child_changed", snap=>updateCell(parseInt(snap.key,10), snap.val()));
+nombresRef.on("child_removed", snap=>updateCell(parseInt(snap.key,10), ""));
 
-  let numero = 1;
+const pagadoRef = db.ref("pagado");
+pagadoRef.on("child_added", snap=>updateCheckbox(parseInt(snap.key,10), snap.val()));
+pagadoRef.on("child_changed", snap=>updateCheckbox(parseInt(snap.key,10), snap.val()));
+pagadoRef.on("child_removed", snap=>updateCheckbox(parseInt(snap.key,10), false));
 
-  function construirTabla() {
-    tabla.innerHTML = "";
-    numero = 1;
-    for (let fila = 0; fila < 10; fila++) {
-      const tr = document.createElement("tr");
-      for (let col = 0; col < 10; col++) {
-        const td = document.createElement("td");
-        const thisNumero = numero;
+nombresRef.once("value").then(snapshot=>{
+  const data = snapshot.val()||{};
+  for(const k in data) updateCell(parseInt(k,10), data[k]);
+});
+pagadoRef.once("value").then(snapshot=>{
+  const data = snapshot.val()||{};
+  for(const k in data) updateCheckbox(parseInt(k,10), data[k]);
+});
 
-        const numeroSpan = document.createElement("span");
-        numeroSpan.className = "numero";
-        numeroSpan.innerText = thisNumero === 100 ? "00" : thisNumero;
+function updateCell(num,text){
+  const el = document.getElementById("n"+num);
+  if(!el) return;
+  el.innerText = text||"";
+  if(text && text.trim()!=="") { el.classList.add("ocupado"); el.contentEditable=false; }
+  else { el.classList.remove("ocupado"); el.contentEditable=false; }
+}
 
-        const editableSpan = document.createElement("div");
-        editableSpan.className = "editable";
-        editableSpan.id = "n" + thisNumero;
-        editableSpan.contentEditable = false;
+function updateCheckbox(num, val){
+  const td = document.getElementById("n"+num)?.parentNode;
+  if(!td) return;
+  const cb = td.querySelector("input[type='checkbox']");
+  if(!cb) return;
+  cb.checked = !!val;
+  cb.disabled = !canEdit;
+}
 
-        editableSpan.addEventListener("click", () => {
-          if (!canEdit) {
-            alert("Introduce la contraseña para modificar nombres.");
-            return;
-          }
-          editableSpan.contentEditable = true;
-          editableSpan.focus();
-          document.getSelection().collapse(editableSpan, editableSpan.childNodes.length);
-        });
-
-        editableSpan.addEventListener("blur", () => {
-          if (!canEdit) {
-            editableSpan.contentEditable = false;
-            return;
-          }
-          const texto = editableSpan.innerText.trim();
-          const key = "nombres/" + thisNumero;
-          if (texto !== "") {
-            db.ref(key).set(texto).catch(err => console.error(err));
-            editableSpan.classList.add("ocupado");
-            editableSpan.contentEditable = false;
-          } else {
-            db.ref(key).remove().catch(err => console.error(err));
-            editableSpan.classList.remove("ocupado");
-            editableSpan.contentEditable = false;
-          }
-        });
-
-        td.appendChild(numeroSpan);
-        td.appendChild(editableSpan);
-        tr.appendChild(td);
-        numero++;
+// ==== MARCAR CASILLA PREMIADA EL DÍA DEL SORTEO ====
+function marcarPremiado() {
+  const hoy = new Date();
+  const diaSorteo = new Date(hoy.getFullYear(), 11, 21); // 21 diciembre (mes 11 = diciembre)
+  if(hoy.getDate() === 21 && hoy.getMonth() === 11) {
+    const terminacion = prompt("Introduce la terminación del número premiado (2 dígitos):");
+    for(let i=1; i<=100; i++){
+      const lastTwo = i===100?"00":String(i).padStart(2,"0");
+      if(lastTwo === terminacion){
+        const td = document.getElementById("n"+i).parentNode;
+        if(td) td.classList.add("premiado");
+        break;
       }
-      tabla.appendChild(tr);
     }
   }
+}
 
-  construirTabla();
+window.addEventListener("load", marcarPremiado);
 
-  const nombresRef = db.ref("nombres");
-
-  nombresRef.on("child_added", snapshot => updateCell(parseInt(snapshot.key, 10), snapshot.val()));
-  nombresRef.on("child_changed", snapshot => updateCell(parseInt(snapshot.key, 10), snapshot.val()));
-  nombresRef.on("child_removed", snapshot => updateCell(parseInt(snapshot.key, 10), ""));
-
-  nombresRef.once("value").then(snapshot => {
-    const data = snapshot.val() || {};
-    for (const k in data) {
-      if (Object.prototype.hasOwnProperty.call(data, k)) {
-        updateCell(parseInt(k,10), data[k]);
-      }
-    }
-  }).catch(err => console.error(err));
-
-  function updateCell(num, text) {
-    const el = document.getElementById("n" + num);
-    if (!el) return;
-    el.innerText = text || "";
-    if (text && text.trim() !== "") {
-      el.classList.add("ocupado");
-      el.contentEditable = false;
-    } else {
-      el.classList.remove("ocupado");
-      el.contentEditable = false;
-    }
-  }
-
-  if (canEdit) btnLogout.style.display = "inline-block";
-
+if(canEdit) btnLogout.style.display="inline-block";
 </script>
 
 </body>
 </html>
+
