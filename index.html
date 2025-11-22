@@ -5,152 +5,28 @@
   <title>Rifa Manuel</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #faf8f5; color: #222; text-align: center; }
-
-    h2 {
-      font-family: 'Arial Black', Gadget, sans-serif;
-      font-size: 34px;
-      color: #b30000;
-      text-shadow: 2px 2px 6px #ccc;
-      margin-bottom: 6px;
-    }
-
-    ol {
-      background: #fff0e6;
-      padding: 12px 20px;
-      border-radius: 10px;
-      width: fit-content;
-      margin: 8px auto 18px auto;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.12);
-      font-weight: bold;
-      color: #333;
-    }
+    h2 { font-family: 'Arial Black', Gadget, sans-serif; font-size: 34px; color: #b30000; text-shadow: 2px 2px 6px #ccc; margin-bottom: 6px; }
+    ol { background: #fff0e6; padding: 12px 20px; border-radius: 10px; width: fit-content; margin: 8px auto 18px auto; box-shadow: 2px 2px 10px rgba(0,0,0,0.12); font-weight: bold; color: #333; }
     ol li { margin-bottom: 6px; }
-
-    .hero-img {
-      display: block;
-      margin: 10px auto 18px auto;
-      width: 18%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 3px 3px 18px rgba(0,0,0,0.18);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+    ol li:nth-child(1), ol li:nth-child(2) { margin-left: 0; padding-left: 0; }
+    .hero-img { display: block; margin: 10px auto 18px auto; width: 18%; height: auto; border-radius: 12px; box-shadow: 3px 3px 18px rgba(0,0,0,0.18); transition: transform 0.3s, box-shadow 0.3s; }
     .hero-img:hover { transform: scale(1.05); box-shadow: 6px 6px 30px rgba(0,0,0,0.28); }
-
-    /* CONTRASEÑA ESTILIZADA */
-    .pw-box {
-      text-align: center;
-      margin-bottom: 20px;
-      background: #fff0e6;
-      padding: 15px 25px;
-      border-radius: 12px;
-      border: 2px solid #ffcc80;
-      display: inline-block;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-    }
-    .pw-box input[type="password"] {
-      padding: 8px 12px;
-      border-radius: 12px;
-      border: 1px solid #b30000;
-      width: 180px;
-      font-size: 16px;
-      text-align: center;
-    }
-    .pw-box button {
-      padding: 8px 14px;
-      margin-left: 8px;
-      background: #b30000;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+    .pw-box { text-align: center; margin-bottom: 20px; background: #fff0e6; padding: 15px 25px; border-radius: 12px; border: 2px solid #ffcc80; display: inline-block; box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
+    .pw-box input[type="password"] { padding: 8px 12px; border-radius: 12px; border: 1px solid #b30000; width: 180px; font-size: 16px; text-align: center; }
+    .pw-box button { padding: 8px 14px; margin-left: 8px; background: #b30000; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; }
     .pw-box button:hover { opacity: 0.9; transform: scale(1.05); }
-
-    .tabla-wrap {
-      width: fit-content;
-      margin: 18px auto;
-      padding: 10px;
-      border-radius: 10px;
-      border: 3px solid #b30000;
-      background: linear-gradient(180deg,#fffdf7,#fffaf3);
-      box-shadow: 3px 3px 18px rgba(0,0,0,0.12);
-    }
-
+    .tabla-wrap { width: fit-content; margin: 18px auto; padding: 10px; border-radius: 10px; border: 3px solid #b30000; background: linear-gradient(180deg,#fffdf7,#fffaf3); box-shadow: 3px 3px 18px rgba(0,0,0,0.12); }
     table { border-collapse: collapse; position: relative; }
-    td {
-      border: 1px solid #bfbfbf;
-      width: 60px;
-      height: 60px;
-      padding: 4px;
-      position: relative;
-      vertical-align: top;
-      background: #fffdf7;
-      transition: background 0.2s, transform 0.08s;
-      border-radius: 6px;
-    }
+    td { border: 1px solid #bfbfbf; width: 60px; height: 60px; padding: 4px; position: relative; vertical-align: top; background: #fffdf7; transition: background 0.2s, transform 0.08s; border-radius: 6px; }
     td:active { transform: translateY(1px); }
-
-    .numero {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      font-weight: 700;
-      font-size: 13px;
-      color: #b30000;
-      text-shadow: 1px 1px 0 #fff;
-      z-index: 3;
-    }
-
-    .editable {
-      position: absolute;
-      bottom: 4px;
-      left: 4px;
-      right: 4px;
-      font-size: 13px;
-      padding: 2px 4px;
-      min-height: 18px;
-      border-radius: 4px;
-      outline: none;
-      cursor: text;
-      color: #222;
-      word-wrap: break-word;
-      z-index: 1;
-    }
+    .numero { position: absolute; top: 4px; left: 4px; font-weight: 700; font-size: 13px; color: #b30000; text-shadow: 1px 1px 0 #fff; z-index: 3; }
+    .editable { position: absolute; bottom: 4px; left: 4px; right: 4px; font-size: 13px; padding: 2px 4px; min-height: 18px; border-radius: 4px; outline: none; cursor: text; color: #222; word-wrap: break-word; z-index: 1; }
     .editable[contenteditable="false"] { cursor: default; }
     .editable:hover { background: #f6f6f6; }
-
-    input[type="checkbox"] {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      z-index: 2;
-      cursor: pointer;
-    }
-
-    .ocupado {
-      background-color: #d4f8d4 !important;
-      border: 1px solid #5cb85c !important;
-      box-shadow: inset 0 0 6px rgba(0,100,0,0.12);
-      font-weight: 700;
-    }
-
-    .premiado {
-      background-color: gold !important;
-      border: 2px solid #b30000 !important;
-      box-shadow: 0 0 6px rgba(0,0,0,0.5);
-    }
-
-    @media (max-width: 720px) {
-      .hero-img { width: 28%; }
-      td { width: 44px; height: 44px; }
-      .editable { font-size: 12px; }
-    }
+    input[type="checkbox"] { position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; z-index: 2; cursor: pointer; }
+    .ocupado { background-color: #d4f8d4 !important; border: 1px solid #5cb85c !important; box-shadow: inset 0 0 6px rgba(0,100,0,0.12); font-weight: 700; }
+    .premiado { background-color: gold !important; border: 2px solid #b30000 !important; box-shadow: 0 0 6px rgba(0,0,0,0.5); }
+    @media (max-width: 720px) { .hero-img { width: 28%; } td { width: 44px; height: 44px; } .editable { font-size: 12px; } }
   </style>
 </head>
 <body>
@@ -158,8 +34,8 @@
 <h2>Rifa Cesta Navidad</h2>
 
 <ol>
-  <li>Jamón</li>
-  <li>Paleta</li>
+  <li style="margin-left:0; padding-left:0;">Jamón</li>
+  <li style="margin-left:0; padding-left:0;">Paleta</li>
   <li>Décimo Lotería Nacional</li>
 </ol>
 
@@ -237,23 +113,50 @@ function construirTabla() {
       editableSpan.contentEditable=false;
 
       editableSpan.addEventListener("click", ()=>{
-        if(!canEdit){ alert("Introduce la contraseña para modificar nombres."); return; }
-        editableSpan.contentEditable=true; editableSpan.focus();
+        // Permitir editar si está vacío o si tiene contraseña
+        if(editableSpan.innerText.trim() !== "" && !canEdit){
+          alert("Esta celda ya tiene nombre. Introduce la contraseña para modificarlo.");
+          return;
+        }
+        editableSpan.contentEditable = true;
+        editableSpan.focus();
       });
 
       editableSpan.addEventListener("blur", ()=>{
-        if(!canEdit){ editableSpan.contentEditable=false; return; }
         const texto = editableSpan.innerText.trim();
         const key = "nombres/"+thisNumero;
-        if(texto!==""){ db.ref(key).set(texto); editableSpan.classList.add("ocupado"); editableSpan.contentEditable=false; }
-        else { db.ref(key).remove(); editableSpan.classList.remove("ocupado"); editableSpan.contentEditable=false; }
+
+        if(texto !== ""){
+          if(canEdit || !editableSpan.classList.contains("ocupado")){
+            db.ref(key).set(texto);
+            editableSpan.classList.add("ocupado");
+          } else {
+            db.ref(key).once("value").then(snap=>{
+              editableSpan.innerText = snap.val() || "";
+            });
+          }
+        } else {
+          if(canEdit) {
+            db.ref(key).remove();
+            editableSpan.classList.remove("ocupado");
+          } else {
+            db.ref(key).once("value").then(snap=>{
+              editableSpan.innerText = snap.val() || "";
+            });
+          }
+        }
+        editableSpan.contentEditable=false;
       });
 
       const checkbox = document.createElement("input");
       checkbox.type="checkbox";
       checkbox.disabled = !canEdit;
       checkbox.addEventListener("change", ()=>{
-        if(!canEdit){ checkbox.checked = !checkbox.checked; return; }
+        if(!canEdit && !checkbox.checked){
+          checkbox.checked = true;
+          alert("Solo puedes marcar como pagado. Para desmarcar se necesita contraseña.");
+          return;
+        }
         db.ref("pagado/"+thisNumero).set(checkbox.checked ? true : null);
       });
 
@@ -309,8 +212,7 @@ function updateCheckbox(num, val){
 // ==== MARCAR CASILLA PREMIADA EL DÍA DEL SORTEO ====
 function marcarPremiado() {
   const hoy = new Date();
-  const diaSorteo = new Date(hoy.getFullYear(), 11, 21); // 21 diciembre (mes 11 = diciembre)
-  if(hoy.getDate() === 21 && hoy.getMonth() === 11) {
+  if(hoy.getDate() === 21 && hoy.getMonth() === 11) { // 21 diciembre
     const terminacion = prompt("Introduce la terminación del número premiado (2 dígitos):");
     for(let i=1; i<=100; i++){
       const lastTwo = i===100?"00":String(i).padStart(2,"0");
@@ -330,4 +232,3 @@ if(canEdit) btnLogout.style.display="inline-block";
 
 </body>
 </html>
-
