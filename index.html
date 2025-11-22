@@ -5,7 +5,7 @@
   <title>Rifa Manuel</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 500px; text-align: left; }
+    table { border-collapse: collapse; width: 500px; text-align: left; margin-top: 10px;}
     td {
       border: 1px solid #000;
       width: 50px;
@@ -45,9 +45,16 @@
 </ol>
 <img src="imagenes/renderedimage.jpeg" style="width: 13%; height:auto;" alt="Mi imagen">
 
+<!-- Pedir contraseña -->
+<div>
+  <label for="pwd">Contraseña para modificar nombres:</label>
+  <input type="password" id="pwd" placeholder="Introduce la contraseña">
+  <button id="btnPwd">Aceptar</button>
+</div>
+
 <table id="tablaRifa"></table>
 
-<!-- Firebase App -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -63,18 +70,28 @@
     appId: "1:431157221434:web:235a69a675bdaf220ebd03"
   };
 
-  // Inicializar Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
   const tabla = document.getElementById("tablaRifa");
   let numero = 1;
+  let editable = false; // control de edición según contraseña
 
-  // Leer los nombres guardados en Firebase
+  // Pedir contraseña
+  document.getElementById("btnPwd").addEventListener("click", () => {
+    const input = document.getElementById("pwd").value;
+    if(input === "1234") { // <-- Cambia aquí la contraseña
+      editable = true;
+      alert("Contraseña correcta. Ahora puedes editar los nombres.");
+    } else {
+      alert("Contraseña incorrecta.");
+    }
+  });
+
+  // Leer nombres de Firebase y generar tabla
   db.ref("nombres").once("value").then(snapshot => {
     const nombresGuardados = snapshot.val() || {};
 
-    // Generar tabla 10x10
     for (let fila = 0; fila < 10; fila++) {
       const tr = document.createElement("tr");
 
@@ -89,21 +106,33 @@
         const editableSpan = document.createElement("div");
         editableSpan.className = "editable";
         editableSpan.id = "n" + thisNumero;
-        editableSpan.contentEditable = true;
+        editableSpan.contentEditable = false; // por defecto bloqueado
         editableSpan.innerText = nombresGuardados[thisNumero] || "";
 
-        // Si ya tiene nombre, marcar como ocupado y bloquear
         if(editableSpan.innerText.trim() !== "") {
           editableSpan.classList.add("ocupado");
-          editableSpan.contentEditable = false;
         }
 
-        // Guardar cambios en Firebase al perder foco
+        // Evento para guardar o borrar solo si contraseña correcta
+        editableSpan.addEventListener("click", () => {
+          if(editable) {
+            editableSpan.contentEditable = true;
+          } else {
+            alert("Introduce la contraseña para modificar nombres.");
+          }
+        });
+
         editableSpan.addEventListener("blur", () => {
+          if(!editable) return;
+
           const texto = editableSpan.innerText.trim();
           if(texto !== "") {
             db.ref("nombres/" + thisNumero).set(texto);
             editableSpan.classList.add("ocupado");
+            editableSpan.contentEditable = false;
+          } else {
+            db.ref("nombres/" + thisNumero).remove();
+            editableSpan.classList.remove("ocupado");
             editableSpan.contentEditable = false;
           }
         });
@@ -118,6 +147,9 @@
     }
   });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
