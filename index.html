@@ -150,9 +150,10 @@ function construirTabla() {
 
       const checkbox = document.createElement("input");
       checkbox.type="checkbox";
-      checkbox.disabled = !canEdit;
+
       checkbox.addEventListener("change", ()=>{
         if(!canEdit && !checkbox.checked){
+          // No permitir desmarcar sin contraseña
           checkbox.checked = true;
           alert("Solo puedes marcar como pagado. Para desmarcar se necesita contraseña.");
           return;
@@ -206,13 +207,11 @@ function updateCheckbox(num, val){
   const cb = td.querySelector("input[type='checkbox']");
   if(!cb) return;
   cb.checked = !!val;
-  cb.disabled = !canEdit;
 }
 
-// ==== MARCAR CASILLA PREMIADA EL DÍA DEL SORTEO ====
 function marcarPremiado() {
   const hoy = new Date();
-  if(hoy.getDate() === 21 && hoy.getMonth() === 11) { // 21 diciembre
+  if(hoy.getDate() === 21 && hoy.getMonth() === 11) {
     const terminacion = prompt("Introduce la terminación del número premiado (2 dígitos):");
     for(let i=1; i<=100; i++){
       const lastTwo = i===100?"00":String(i).padStart(2,"0");
