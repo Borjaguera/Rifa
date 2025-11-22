@@ -5,60 +5,142 @@
   <title>Rifa Manuel</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #faf8f5; color: #222; text-align: center; }
+
     h2 { font-family: 'Arial Black', Gadget, sans-serif; font-size: 34px; color: #b30000; text-shadow: 2px 2px 6px #ccc; margin-bottom: 6px; }
-    ol { background: #fff0e6; padding: 12px 20px; border-radius: 10px; width: fit-content; margin: 8px auto 18px auto; box-shadow: 2px 2px 10px rgba(0,0,0,0.12); font-weight: bold; color: #333; }
-    ol li { margin-bottom: 6px; }
-    ol li:nth-child(1), ol li:nth-child(2) { margin-left: 0; padding-left: 0; }
-    .hero-img { display: block; margin: 10px auto 18px auto; width: 18%; height: auto; border-radius: 12px; box-shadow: 3px 3px 18px rgba(0,0,0,0.18); transition: transform 0.3s, box-shadow 0.3s; }
+
+    /* Lista ol ajustada para que el número quede pegado al texto */
+    ol.lista-rifa {
+      background: #fff0e6;
+      padding: 12px 20px;
+      border-radius: 10px;
+      width: fit-content;
+      margin: 8px auto 18px auto;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.12);
+      font-weight: bold;
+      color: #333;
+      list-style-position: inside; /* número pegado al texto */
+    }
+    ol.lista-rifa li { margin-bottom: 6px; }
+
+    .hero-img { display: block; margin: 10px auto 12px auto; width: 18%; height: auto; border-radius: 12px; box-shadow: 3px 3px 18px rgba(0,0,0,0.18); transition: transform 0.3s, box-shadow 0.3s; }
     .hero-img:hover { transform: scale(1.05); box-shadow: 6px 6px 30px rgba(0,0,0,0.28); }
-    .pw-box { text-align: center; margin-bottom: 20px; background: #fff0e6; padding: 15px 25px; border-radius: 12px; border: 2px solid #ffcc80; display: inline-block; box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
-    .pw-box input[type="password"] { padding: 8px 12px; border-radius: 12px; border: 1px solid #b30000; width: 180px; font-size: 16px; text-align: center; }
-    .pw-box button { padding: 8px 14px; margin-left: 8px; background: #b30000; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-    .pw-box button:hover { opacity: 0.9; transform: scale(1.05); }
-    .tabla-wrap { width: fit-content; margin: 18px auto; padding: 10px; border-radius: 10px; border: 3px solid #b30000; background: linear-gradient(180deg,#fffdf7,#fffaf3); box-shadow: 3px 3px 18px rgba(0,0,0,0.12); }
+
+    .sorteo-principal {
+      font-weight: bold;
+      color: #b30000;
+      font-size: 18px;
+      background: #fff4f0;
+      padding: 10px 15px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 2px 2px 12px rgba(0,0,0,0.12);
+      margin-bottom: 12px;
+    }
+
+    .sorteo-info {
+      margin: 10px auto 20px auto;
+      max-width: 600px;
+      background: #fff3e6;
+      border-radius: 12px;
+      padding: 12px 20px;
+      color: #b30000;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 2px 2px 12px rgba(0,0,0,0.12);
+    }
+
+    .tabla-wrap {
+      width: fit-content;
+      margin: 18px auto;
+      padding: 10px;
+      border-radius: 10px;
+      border: 3px solid #b30000;
+      background: linear-gradient(180deg,#fffdf7,#fffaf3);
+      box-shadow: 3px 3px 18px rgba(0,0,0,0.12);
+    }
+
     table { border-collapse: collapse; position: relative; }
-    td { border: 1px solid #bfbfbf; width: 60px; height: 60px; padding: 4px; position: relative; vertical-align: top; background: #fffdf7; transition: background 0.2s, transform 0.08s; border-radius: 6px; }
+    td {
+      border: 1px solid #bfbfbf;
+      width: 60px;
+      height: 60px;
+      padding: 4px;
+      position: relative;
+      vertical-align: top;
+      background: #fffdf7;
+      transition: background 0.2s, transform 0.08s;
+      border-radius: 6px;
+    }
     td:active { transform: translateY(1px); }
+
     .numero { position: absolute; top: 4px; left: 4px; font-weight: 700; font-size: 13px; color: #b30000; text-shadow: 1px 1px 0 #fff; z-index: 3; }
     .editable { position: absolute; bottom: 4px; left: 4px; right: 4px; font-size: 13px; padding: 2px 4px; min-height: 18px; border-radius: 4px; outline: none; cursor: text; color: #222; word-wrap: break-word; z-index: 1; }
     .editable[contenteditable="false"] { cursor: default; }
     .editable:hover { background: #f6f6f6; }
+
     input[type="checkbox"] { position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; z-index: 2; cursor: pointer; }
+
     .ocupado { background-color: #d4f8d4 !important; border: 1px solid #5cb85c !important; box-shadow: inset 0 0 6px rgba(0,100,0,0.12); font-weight: 700; }
     .premiado { background-color: gold !important; border: 2px solid #b30000 !important; box-shadow: 0 0 6px rgba(0,0,0,0.5); }
-    @media (max-width: 720px) { .hero-img { width: 28%; } td { width: 44px; height: 44px; } .editable { font-size: 12px; } }
+
+    .pw-box {
+      text-align: center;
+      margin-top: 20px;
+      background: #fff0e6;
+      padding: 15px 25px;
+      border-radius: 12px;
+      border: 2px solid #ffcc80;
+      display: inline-block;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .pw-box input[type="password"] { padding: 8px 12px; border-radius: 12px; border: 1px solid #b30000; width: 180px; font-size: 16px; text-align: center; }
+    .pw-box button { padding: 8px 14px; margin-left: 8px; background: #b30000; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .pw-box button:hover { opacity: 0.9; transform: scale(1.05); }
+
+    @media (max-width: 720px) {
+      .hero-img { width: 28%; }
+      td { width: 44px; height: 44px; }
+      .editable { font-size: 12px; }
+    }
   </style>
 </head>
 <body>
 
 <h2>Rifa Cesta Navidad</h2>
 
-<ol>
-  <li style="margin-left:0; padding-left:0;">Jamón</li>
-  <li style="margin-left:0; padding-left:0;">Paleta</li>
+<ol class="lista-rifa">
+  <li>Jamón</li>
+  <li>Paleta</li>
   <li>Décimo Lotería Nacional</li>
 </ol>
 
-<p style="font-weight:bold; color:#b30000;">
-📅 Sorteo el día <strong>21 de diciembre</strong> con la terminación del número premiado de la ONCE
+<!-- Sección principal del sorteo con tréboles al inicio y fin de la frase -->
+<p class="sorteo-principal">
+  📅 <strong>Sorteo: 21 de diciembre de 2025</strong><br>
+  🍀 La terminación del número premiado de la ONCE decidirá la casilla ganadora 🍀
 </p>
 
 <img class="hero-img" src="imagenes/renderedimage.jpeg" alt="Premio">
 
-<div class="pw-box">
-  <label for="pwd">Contraseña para modificar nombres/pagado:</label>
-  <input type="password" id="pwd" placeholder="Introduce la contraseña">
-  <button id="btnPwd">Aceptar</button>
-  <button id="btnLogout" style="display:none; margin-left:8px;">Cerrar</button>
+<div class="sorteo-info">
+  ⚠️ Atención: Para comprobar el ganador, debes ingresar la terminación del número que ha salido en el sorteo del 21 de diciembre de 2025. El sistema marcará automáticamente la casilla ganadora en la tabla.
 </div>
 
 <div class="tabla-wrap">
   <table id="tablaRifa" aria-label="Tabla rifa"></table>
 </div>
 
+<div class="pw-box">
+  <label for="pwd">Contraseña para modificar nombres/pagado:</label><br><br>
+  <input type="password" id="pwd" placeholder="Introduce la contraseña">
+  <button id="btnPwd">Aceptar</button>
+  <button id="btnLogout" style="display:none; margin-left:8px;">Cerrar</button>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
+// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCNg_YSCyPJd0MJUTHYTTeQCHRckkCWVrU",
   authDomain: "rifa-manuel.firebaseapp.com",
@@ -89,10 +171,8 @@ btnPwd.addEventListener("click", () => {
   else { alert("Contraseña incorrecta."); }
   inputPwd.value = "";
 });
-
 btnLogout.addEventListener("click", () => { setEditState(false); alert("Modo edición cerrado."); });
 
-// Construcción de tabla
 let numero = 1;
 function construirTabla() {
   tabla.innerHTML = "";
@@ -113,7 +193,6 @@ function construirTabla() {
       editableSpan.contentEditable=false;
 
       editableSpan.addEventListener("click", ()=>{
-        // Permitir editar si está vacío o si tiene contraseña
         if(editableSpan.innerText.trim() !== "" && !canEdit){
           alert("Esta celda ya tiene nombre. Introduce la contraseña para modificarlo.");
           return;
@@ -125,35 +204,24 @@ function construirTabla() {
       editableSpan.addEventListener("blur", ()=>{
         const texto = editableSpan.innerText.trim();
         const key = "nombres/"+thisNumero;
-
         if(texto !== ""){
           if(canEdit || !editableSpan.classList.contains("ocupado")){
             db.ref(key).set(texto);
             editableSpan.classList.add("ocupado");
           } else {
-            db.ref(key).once("value").then(snap=>{
-              editableSpan.innerText = snap.val() || "";
-            });
+            db.ref(key).once("value").then(snap=>{ editableSpan.innerText = snap.val() || ""; });
           }
         } else {
-          if(canEdit) {
-            db.ref(key).remove();
-            editableSpan.classList.remove("ocupado");
-          } else {
-            db.ref(key).once("value").then(snap=>{
-              editableSpan.innerText = snap.val() || "";
-            });
-          }
+          if(canEdit) { db.ref(key).remove(); editableSpan.classList.remove("ocupado"); }
+          else { db.ref(key).once("value").then(snap=>{ editableSpan.innerText = snap.val() || ""; }); }
         }
         editableSpan.contentEditable=false;
       });
 
       const checkbox = document.createElement("input");
       checkbox.type="checkbox";
-
       checkbox.addEventListener("change", ()=>{
         if(!canEdit && !checkbox.checked){
-          // No permitir desmarcar sin contraseña
           checkbox.checked = true;
           alert("Solo puedes marcar como pagado. Para desmarcar se necesita contraseña.");
           return;
@@ -173,7 +241,6 @@ function construirTabla() {
 
 construirTabla();
 
-// Firebase listeners
 const nombresRef = db.ref("nombres");
 nombresRef.on("child_added", snap=>updateCell(parseInt(snap.key,10), snap.val()));
 nombresRef.on("child_changed", snap=>updateCell(parseInt(snap.key,10), snap.val()));
@@ -231,3 +298,4 @@ if(canEdit) btnLogout.style.display="inline-block";
 
 </body>
 </html>
+
