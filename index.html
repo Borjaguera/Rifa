@@ -47,50 +47,76 @@
 
 <table id="tablaRifa"></table>
 
+<!-- Firebase App -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
 <script>
-const tabla = document.getElementById("tablaRifa");
-let numero = 1;
+  // Configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCNg_YSCyPJd0MJUTHYTTeQCHRckkCWVrU",
+    authDomain: "rifa-manuel.firebaseapp.com",
+    databaseURL: "https://rifa-manuel-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "rifa-manuel",
+    storageBucket: "rifa-manuel.firebasestorage.app",
+    messagingSenderId: "431157221434",
+    appId: "1:431157221434:web:235a69a675bdaf220ebd03"
+  };
 
-// Cargar datos guardados en localStorage
-let nombresGuardados = JSON.parse(localStorage.getItem("rifa")) || {};
+  // Inicializar Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-// Generar tabla 10x10
-for (let fila = 0; fila < 10; fila++) {
-  const tr = document.createElement("tr");
+  const tabla = document.getElementById("tablaRifa");
+  let numero = 1;
 
-  for (let col = 0; col < 10; col++) {
-    const td = document.createElement("td");
-    const thisNumero = numero; // <-- Guardar el número actual para este td
+  // Leer los nombres guardados en Firebase
+  db.ref("nombres").once("value").then(snapshot => {
+    const nombresGuardados = snapshot.val() || {};
 
-    const numeroSpan = document.createElement("span");
-    numeroSpan.className = "numero";
-    numeroSpan.innerText = thisNumero === 100 ? "00" : thisNumero;
+    // Generar tabla 10x10
+    for (let fila = 0; fila < 10; fila++) {
+      const tr = document.createElement("tr");
 
-    const editableSpan = document.createElement("div");
-    editableSpan.className = "editable";
-    editableSpan.contentEditable = true;
-    editableSpan.id = "n" + thisNumero;
-    editableSpan.innerText = nombresGuardados[thisNumero] || "";
+      for (let col = 0; col < 10; col++) {
+        const td = document.createElement("td");
+        const thisNumero = numero;
 
-    // Guardar al perder foco
-    editableSpan.addEventListener("blur", () => {
-      const texto = editableSpan.innerText.trim();
-      if(texto !== "") {
-        nombresGuardados[thisNumero] = texto;
-        localStorage.setItem("rifa", JSON.stringify(nombresGuardados));
-        editableSpan.classList.add("ocupado"); // opcional: resalta la celda
-        editableSpan.contentEditable = false; // opcional: bloquea la celda después de escribir
+        const numeroSpan = document.createElement("span");
+        numeroSpan.className = "numero";
+        numeroSpan.innerText = thisNumero === 100 ? "00" : thisNumero;
+
+        const editableSpan = document.createElement("div");
+        editableSpan.className = "editable";
+        editableSpan.id = "n" + thisNumero;
+        editableSpan.contentEditable = true;
+        editableSpan.innerText = nombresGuardados[thisNumero] || "";
+
+        // Si ya tiene nombre, marcar como ocupado y bloquear
+        if(editableSpan.innerText.trim() !== "") {
+          editableSpan.classList.add("ocupado");
+          editableSpan.contentEditable = false;
+        }
+
+        // Guardar cambios en Firebase al perder foco
+        editableSpan.addEventListener("blur", () => {
+          const texto = editableSpan.innerText.trim();
+          if(texto !== "") {
+            db.ref("nombres/" + thisNumero).set(texto);
+            editableSpan.classList.add("ocupado");
+            editableSpan.contentEditable = false;
+          }
+        });
+
+        td.appendChild(numeroSpan);
+        td.appendChild(editableSpan);
+        tr.appendChild(td);
+        numero++;
       }
-    });
 
-    td.appendChild(numeroSpan);
-    td.appendChild(editableSpan);
-    tr.appendChild(td);
-    numero++;
-  }
-
-  tabla.appendChild(tr);
-}
+      tabla.appendChild(tr);
+    }
+  });
 </script>
 
 </body>
