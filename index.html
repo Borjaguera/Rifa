@@ -202,6 +202,9 @@ function construirTabla() {
       editableSpan.id="n"+thisNumero;
       editableSpan.contentEditable=false;
 
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+
       // --- CLICK SOBRE NOMBRE ---
       editableSpan.addEventListener("click", ()=>{
         if(editableSpan.innerText.trim() !== "" && !canEdit){
@@ -246,6 +249,9 @@ function construirTabla() {
             <br><br>
             <button id="confirmPago" style="display:none;padding:10px 15px;border:none;border-radius:12px;background:#ff6600;color:white;cursor:pointer;font-weight:bold;">
               Confirmar que he pagado
+            </button>
+            <button id="btnCancelar" style="margin:5px;padding:10px 15px;border:none;border-radius:12px;background:#ccc;color:#222;cursor:pointer;font-weight:bold;">
+              Cancelar
             </button>
           `;
 
@@ -321,13 +327,15 @@ function construirTabla() {
             db.ref(keyNombre).set(nombre.trim());
             db.ref(keyPagado).set(true);
 
-            // Marca automáticamente el checkbox como pagado
             checkbox.checked = true;
-
             editableSpan.classList.add("ocupado");
             editableSpan.contentEditable = false;
             document.body.removeChild(modal);
             alert("¡Número reservado correctamente!");
+          });
+
+          document.getElementById("btnCancelar").addEventListener("click", () => {
+            document.body.removeChild(modal);
           });
 
           return;
@@ -356,15 +364,13 @@ function construirTabla() {
         editableSpan.contentEditable=false;
       });
 
-      // --- CHECKBOX CORRECTO ---
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
+      // --- CHECKBOX ---
       checkbox.addEventListener("change", ()=>{
         if(canEdit){ 
           db.ref("pagado/"+thisNumero).set(checkbox.checked ? true : null);
         } else {
-          // Fuera de modo edición, no se puede cambiar manualmente
-          updateCheckbox(thisNumero, checkbox.checked);
+          checkbox.checked = !checkbox.checked;
+          alert("Debes introducir la contraseña para modificar el estado de pago.");
         }
       });
 
