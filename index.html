@@ -8,7 +8,6 @@
 
     h2 { font-family: 'Arial Black', Gadget, sans-serif; font-size: 34px; color: #b30000; text-shadow: 2px 2px 6px #ccc; margin-bottom: 6px; }
 
-    /* Lista ol ajustada para que el número quede pegado al texto */
     ol.lista-rifa {
       background: #fff0e6;
       padding: 12px 20px;
@@ -18,7 +17,7 @@
       box-shadow: 2px 2px 10px rgba(0,0,0,0.12);
       font-weight: bold;
       color: #333;
-      list-style-position: inside; /* número pegado al texto */
+      list-style-position: inside;
     }
     ol.lista-rifa li { margin-bottom: 6px; }
 
@@ -114,7 +113,6 @@
   <li>Décimo Lotería Nacional</li>
 </ol>
 
-<!-- Sección principal del sorteo con tréboles al inicio y fin de la frase -->
 <p class="sorteo-principal">
   📅 <strong>Sorteo: 21 de diciembre de 2025</strong><br>
   🍀 La terminación del número premiado de la ONCE decidirá la casilla ganadora 🍀
@@ -123,7 +121,7 @@
 <img class="hero-img" src="imagenes/renderedimage.jpeg" alt="Premio">
 
 <div class="sorteo-info">
-  ⚠️ Atención: Para comprobar el ganador, debes ingresar la terminación del número que ha salido en el sorteo del 21 de diciembre de 2025. El sistema marcará automáticamente la casilla ganadora en la tabla.
+  ⚠️ Atención: El día del sorteo aparecerá una caja para comprobar el ganador, debes ingresar la terminación del número que ha salido en el sorteo del 21 de diciembre de 2025. El sistema marcará automáticamente la casilla ganadora en la tabla.
 </div>
 
 <div class="tabla-wrap">
@@ -140,13 +138,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
-// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCNg_YSCyPJd0MJUTHYTTeQCHRckkCWVrU",
   authDomain: "rifa-manuel.firebaseapp.com",
   databaseURL: "https://rifa-manuel-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "rifa-manuel",
-  storageBucket: "rifa-manuel.firebasestorage.app",
+  storageBucket: "rifa-manuel.firebasedata.app",
   messagingSenderId: "431157221434",
   appId: "1:431157221434:web:235a69a675bdaf220ebd03"
 };
@@ -162,16 +159,29 @@ let canEdit = sessionStorage.getItem('rifa_can_edit') === '1';
 
 function setEditState(state) {
   canEdit = !!state;
-  if (canEdit) { sessionStorage.setItem('rifa_can_edit', '1'); btnLogout.style.display = "inline-block"; }
-  else { sessionStorage.removeItem('rifa_can_edit'); btnLogout.style.display = "none"; }
+  if (canEdit) { 
+    sessionStorage.setItem('rifa_can_edit', '1'); 
+    btnLogout.style.display = "inline-block"; 
+  } else { 
+    sessionStorage.removeItem('rifa_can_edit'); 
+    btnLogout.style.display = "none"; 
+  }
 }
 
 btnPwd.addEventListener("click", () => {
-  if(inputPwd.value === CORRECT_PWD) { setEditState(true); alert("Contraseña correcta."); }
-  else { alert("Contraseña incorrecta."); }
+  if(inputPwd.value === CORRECT_PWD) { 
+    setEditState(true); 
+    alert("Contraseña correcta."); 
+  } else { 
+    alert("Contraseña incorrecta."); 
+  }
   inputPwd.value = "";
 });
-btnLogout.addEventListener("click", () => { setEditState(false); alert("Modo edición cerrado."); });
+
+btnLogout.addEventListener("click", () => { 
+  setEditState(false); 
+  alert("Modo edición cerrado."); 
+});
 
 let numero = 1;
 function construirTabla() {
@@ -192,13 +202,141 @@ function construirTabla() {
       editableSpan.id="n"+thisNumero;
       editableSpan.contentEditable=false;
 
+      // --- CLICK SOBRE NOMBRE ---
       editableSpan.addEventListener("click", ()=>{
         if(editableSpan.innerText.trim() !== "" && !canEdit){
           alert("Esta celda ya tiene nombre. Introduce la contraseña para modificarlo.");
           return;
         }
-        editableSpan.contentEditable = true;
-        editableSpan.focus();
+
+        if(editableSpan.innerText.trim() === ""){
+          const nombre = prompt("Introduce tu nombre:");
+          if(!nombre || nombre.trim() === "") return;
+
+          // Modal de pago
+          const modal = document.createElement("div");
+          modal.style.position = "fixed";
+          modal.style.top = "0";
+          modal.style.left = "0";
+          modal.style.width = "100%";
+          modal.style.height = "100%";
+          modal.style.background = "rgba(0,0,0,0.7)";
+          modal.style.display = "flex";
+          modal.style.justifyContent = "center";
+          modal.style.alignItems = "center";
+          modal.style.zIndex = "1000";
+
+          const contenido = document.createElement("div");
+          contenido.style.background = "linear-gradient(135deg, #ffefba, #ffffff)";
+          contenido.style.padding = "25px";
+          contenido.style.borderRadius = "20px";
+          contenido.style.textAlign = "center";
+          contenido.style.maxWidth = "320px";
+          contenido.style.boxShadow = "0 8px 25px rgba(0,0,0,0.25)";
+          contenido.style.border = "2px solid #ff9900";
+
+          contenido.innerHTML = `
+            <p style="font-weight:bold; color:#b30000;">Para reservar este número debes pagar <strong>3 €</strong>.</p>
+            <button id="btnRevolut" style="margin:5px;padding:10px 15px;border:none;border-radius:12px;background:#0070BA;color:white;cursor:pointer;font-weight:bold;">
+              Pagar por Revolut
+            </button>
+            <button id="btnEfectivo" style="margin:5px;padding:10px 15px;border:none;border-radius:12px;background:#28a745;color:white;cursor:pointer;font-weight:bold;">
+              Pagar en efectivo
+            </button>
+            <br><br>
+            <button id="confirmPago" style="display:none;padding:10px 15px;border:none;border-radius:12px;background:#ff6600;color:white;cursor:pointer;font-weight:bold;">
+              Confirmar que he pagado
+            </button>
+          `;
+
+          modal.appendChild(contenido);
+          document.body.appendChild(modal);
+
+          // --- ANIMACIÓN DE LUCES ---
+          const canvas = document.createElement("canvas");
+          canvas.style.position = "fixed";
+          canvas.style.top = "0";
+          canvas.style.left = "0";
+          canvas.style.width = "100%";
+          canvas.style.height = "100%";
+          canvas.style.pointerEvents = "none";
+          canvas.style.zIndex = "999";
+          modal.appendChild(canvas);
+
+          const ctx = canvas.getContext("2d");
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+
+          const luces = [];
+          for(let i=0;i<50;i++){
+            luces.push({
+              x: Math.random()*canvas.width,
+              y: Math.random()*canvas.height,
+              r: Math.random()*3+1.5,
+              dx: (Math.random()-0.5)*1.5,
+              dy: (Math.random()-0.5)*1.5,
+              color: ["#ff0000","#00ff00","#ffff00","#ff6600","#ff00ff"][Math.floor(Math.random()*5)]
+            });
+          }
+
+          function animarLuces(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            luces.forEach(l=>{
+              ctx.beginPath();
+              ctx.arc(l.x,l.y,l.r,0,Math.PI*2);
+              ctx.fillStyle = l.color;
+              ctx.fill();
+              l.x += l.dx;
+              l.y += l.dy;
+              if(l.x<0) l.x=canvas.width;
+              if(l.x>canvas.width) l.x=0;
+              if(l.y<0) l.y=canvas.height;
+              if(l.y>canvas.height) l.y=0;
+            });
+            requestAnimationFrame(animarLuces);
+          }
+          animarLuces();
+          window.addEventListener("resize", ()=>{
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          });
+
+          let pagoOk = false;
+          document.getElementById("btnRevolut").addEventListener("click", () => {
+            window.open("https://revolut.me/manuelb14p", "_blank");
+            pagoOk = true;
+            document.getElementById("confirmPago").style.display = "inline-block";
+          });
+
+          document.getElementById("btnEfectivo").addEventListener("click", () => {
+            alert("Debes entregar los 3 € en efectivo al organizador para confirmar tu reserva.");
+            pagoOk = true;
+            document.getElementById("confirmPago").style.display = "inline-block";
+          });
+
+          document.getElementById("confirmPago").addEventListener("click", () => {
+            if (!pagoOk) return;
+            const keyNombre = "nombres/" + thisNumero;
+            const keyPagado = "pagado/" + thisNumero;
+            db.ref(keyNombre).set(nombre.trim());
+            db.ref(keyPagado).set(true);
+
+            // Marca automáticamente el checkbox como pagado
+            checkbox.checked = true;
+
+            editableSpan.classList.add("ocupado");
+            editableSpan.contentEditable = false;
+            document.body.removeChild(modal);
+            alert("¡Número reservado correctamente!");
+          });
+
+          return;
+        }
+
+        if(canEdit){
+          editableSpan.contentEditable = true;
+          editableSpan.focus();
+        }
       });
 
       editableSpan.addEventListener("blur", ()=>{
@@ -218,15 +356,16 @@ function construirTabla() {
         editableSpan.contentEditable=false;
       });
 
+      // --- CHECKBOX CORRECTO ---
       const checkbox = document.createElement("input");
-      checkbox.type="checkbox";
+      checkbox.type = "checkbox";
       checkbox.addEventListener("change", ()=>{
-        if(!canEdit && !checkbox.checked){
-          checkbox.checked = true;
-          alert("Solo puedes marcar como pagado. Para desmarcar se necesita contraseña.");
-          return;
+        if(canEdit){ 
+          db.ref("pagado/"+thisNumero).set(checkbox.checked ? true : null);
+        } else {
+          // Fuera de modo edición, no se puede cambiar manualmente
+          updateCheckbox(thisNumero, checkbox.checked);
         }
-        db.ref("pagado/"+thisNumero).set(checkbox.checked ? true : null);
       });
 
       td.appendChild(numeroSpan);
@@ -241,6 +380,7 @@ function construirTabla() {
 
 construirTabla();
 
+// --- SYNC FIREBASE ---
 const nombresRef = db.ref("nombres");
 nombresRef.on("child_added", snap=>updateCell(parseInt(snap.key,10), snap.val()));
 nombresRef.on("child_changed", snap=>updateCell(parseInt(snap.key,10), snap.val()));
@@ -296,6 +436,7 @@ window.addEventListener("load", marcarPremiado);
 if(canEdit) btnLogout.style.display="inline-block";
 </script>
 
+
+
 </body>
 </html>
-
